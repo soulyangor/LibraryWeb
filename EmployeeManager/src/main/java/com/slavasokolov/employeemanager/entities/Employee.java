@@ -39,7 +39,7 @@ public class Employee implements Serializable {
     public static final String LASTNAME_PROPERTY = "lastname";
     public static final String POST_PROPERTY = "post";
     public static final String DEPARTMENT_PROPERTY = "department";
-    public static final String START_WORK_DATE_PROPERTY = "worksince";
+    //public static final String START_WORK_DATE_PROPERTY = "worksince";
 
     @JsonProperty(ID_PROPERTY)
     private Long id;
@@ -56,8 +56,8 @@ public class Employee implements Serializable {
     @JsonProperty(LASTNAME_PROPERTY)
     private String lastName;
 
-    @JsonProperty(START_WORK_DATE_PROPERTY)
-    private Date startWorkDate;
+    /*@JsonProperty(START_WORK_DATE_PROPERTY)
+    private Date startWorkDate;*/
 
     @JsonProperty(DEPARTMENT_PROPERTY)
     private Department department;
@@ -122,7 +122,7 @@ public class Employee implements Serializable {
         this.lastName = lastName;
     }
 
-    @Temporal(TemporalType.DATE)
+   /* @Temporal(TemporalType.DATE)
     @Column(name = "START_WORK_DATE")
     public Date getStartWorkDate() {
         return startWorkDate;
@@ -130,7 +130,7 @@ public class Employee implements Serializable {
 
     public void setStartWorkDate(Date startWorkDate) {
         this.startWorkDate = startWorkDate;
-    }
+    }*/
 
     @ManyToOne
     @JoinColumn(name = "DEPARTMENT_ID")

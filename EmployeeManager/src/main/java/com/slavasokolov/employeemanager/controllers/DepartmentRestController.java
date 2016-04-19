@@ -7,7 +7,7 @@ package com.slavasokolov.employeemanager.controllers;
 
 import static com.slavasokolov.employeemanager.controllers.DepartmentRestController.DEPARTMENTS_PATH;
 import com.slavasokolov.employeemanager.entities.Department;
-import com.slavasokolov.employeemanager.services.DepartmentService;
+import com.slavasokolov.employeemanager.repositories.DepartmentRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -28,41 +28,37 @@ public class DepartmentRestController {
     public static final String DEPARTMENTS_PATH = "/departments";
     public static final String ITEM_PATH = "/item";
 
-    private DepartmentService departmentService;
+    private DepartmentRepository departmentRepository;
 
     @Autowired(required = false)
-    public void setDepartmentService(DepartmentService departmentService) {
-        this.departmentService = departmentService;
+    public void setDepartmentRepository(DepartmentRepository departmentRepository) {
+        this.departmentRepository = departmentRepository;
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Department> getDepartmentList() {
-        return departmentService.findAll();
+        return departmentRepository.findAll();
     }
 
     @RequestMapping(method = RequestMethod.POST,
             path = ITEM_PATH,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public Department createDepartment(@RequestBody Department department) {
-        System.out.println("Department - " + department);
-        System.out.println("RootDepartment - " + department.getDepartment());
-        return departmentService.create(department);
+        return departmentRepository.create(department);
     }
 
     @RequestMapping(method = RequestMethod.PUT,
             path = ITEM_PATH,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Department updateDepartment(@RequestBody List<Department> departments) {
-        Department oldDepartment = departments.get(0);
-        Department newDepartment = departments.get(1);
-        return departmentService.update(oldDepartment, newDepartment);
+    public Department updateDepartment(@RequestBody Department department) {
+        return departmentRepository.update(department);
     }
 
     @RequestMapping(method = RequestMethod.DELETE,
             path = ITEM_PATH,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public void deleteDepartment(@RequestBody Department department) {
-        System.out.println("Deleting department");
-        departmentService.delete(department);
+        departmentRepository.delete(department);
     }
+
 }

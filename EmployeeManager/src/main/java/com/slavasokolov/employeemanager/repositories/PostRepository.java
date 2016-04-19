@@ -20,6 +20,8 @@ public interface PostRepository {
 
     Post update(Post post);
 
+    Post find(Post post);
+
     void delete(Post post);
 
 }

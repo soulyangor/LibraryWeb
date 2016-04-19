@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Список должностей</title>
+        <title>Список подразделений</title>
         <style>
             .username.ng-valid {
                 background-color: lightgreen;
@@ -51,8 +51,8 @@
                                     <select ng-model="ctrl.department.department" 
                                             id="department"
                                             name="department">
-                                            
-                                        <option value="{{null}}">нет</option>
+
+                                        <option value="null">нет</option>
                                         <option ng-repeat="dep in ctrl.departments" value="{{dep}}">{{dep.name}}</option>
                                     </select> 
                                 </div>
@@ -81,7 +81,7 @@
                         <tr>
                             <th>Наименование</th>
                             <th>Корневое подразделение</th>
-                            <th width="15%"></th>
+                            <th width="20%"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -94,7 +94,8 @@
                                         style=" width: 90px !important;">Изменить</button>  
                                 <button type="button" 
                                         ng-click="ctrl.deleteDepartment(d)" 
-                                        class="btn btn-danger custom-width">Удалить</button>
+                                        class="btn btn-danger custom-width"
+                                        style=" width: 90px !important;">Удалить</button>
                             </td>
                         </tr>
                     </tbody>

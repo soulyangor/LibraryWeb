@@ -4,7 +4,6 @@ App.controller('DepartmentController', ['$scope', 'DepartmentService',
     function ($scope, DepartmentService) {
         var self = this;
         self.department = {id: null, name: '', department: null};
-        self.currentDepartment = {id: null, name: '', department: null};
         self.departments = [];
 
         self.fetchAllDepartments = function () {
@@ -32,7 +31,7 @@ App.controller('DepartmentController', ['$scope', 'DepartmentService',
         };
 
         self.updateDepartment = function (department) {
-            DepartmentService.updateDepartment(self.currentDepartment, department)
+            DepartmentService.updateDepartment(department)
                     .then(
                             self.fetchAllDepartments,
                             function (errResponse) {
@@ -52,22 +51,26 @@ App.controller('DepartmentController', ['$scope', 'DepartmentService',
         };
 
         self.submit = function () {
+            console.log('root - ' + self.department.department);
+            var root = self.department.department !== null ?
+                    JSON.parse(self.department.department) : null;
+            self.department.department = root;
             if (self.department.id === null) {
                 console.log('Saving New Department', self.department);
                 self.createDepartment(self.department);
             } else {
                 self.updateDepartment(self.department);
-                console.log('Department updated with name ', self.currentDepartment.name);
-                console.log('Department updated to name ', self.department.name);
+                console.log('Department updated to  ', self.department);
             }
             self.reset();
         };
 
         self.edit = function (department) {
-            console.log('Department to be edited', department);
-            console.log('RootDepartment ', department.department);
-            self.currentDepartment = department;
+            console.log('Department name to be edited', department);
+            var root = (department.department !== null) ?
+                    JSON.stringify(department.department) : null;
             self.department = department;
+            self.department.department = root;
             $scope.myForm.$setDirty();
         };
 

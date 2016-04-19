@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class PageController {
 
+    public static final String EMPLOYEES_PAGE_PATH = "/employees_page";
     public static final String POSTS_PAGE_PATH = "/posts_page";
     public static final String DEPARTMENTS_PAGE_PATH = "/departments_page";
 
@@ -17,6 +18,11 @@ public class PageController {
     @RequestMapping("/test")
     public String getTestPage() {
         return "test";
+    }
+
+    @RequestMapping(EMPLOYEES_PAGE_PATH)
+    public String getEmployeesPage() {
+        return "employees_page";
     }
 
     @RequestMapping(POSTS_PAGE_PATH)

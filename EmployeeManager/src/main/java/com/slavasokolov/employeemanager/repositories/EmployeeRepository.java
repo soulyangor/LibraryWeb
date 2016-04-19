@@ -20,6 +20,8 @@ public interface EmployeeRepository {
 
     Employee update(Employee employee);
 
+    Employee find(Employee employee);
+
     void delete(Employee employee);
-    
+
 }

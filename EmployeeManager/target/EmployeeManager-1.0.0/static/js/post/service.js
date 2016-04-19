@@ -7,7 +7,7 @@ App.factory('PostService', ['$http', '$q', function ($http, $q) {
 
         return {
             fetchAllPosts: function () {
-                return $http.get('http://localhost:8085/EmployeeManager/posts')
+                return $http.get('/EmployeeManager/posts')
                         .then(
                                 function (response) {
                                     return response.data;
@@ -19,7 +19,7 @@ App.factory('PostService', ['$http', '$q', function ($http, $q) {
                         );
             },
             createPost: function (post) {
-                return $http.post('http://localhost:8085/EmployeeManager/posts/item',
+                return $http.post('/EmployeeManager/posts/item',
                         JSON.stringify(post))
                         .then(
                                 function (response) {
@@ -32,7 +32,7 @@ App.factory('PostService', ['$http', '$q', function ($http, $q) {
                         );
             },
             updatePost: function (post) {
-                return $http.put('http://localhost:8085/EmployeeManager/posts/item',
+                return $http.put('/EmployeeManager/posts/item',
                         JSON.stringify(post))
                         .then(
                                 function (response) {

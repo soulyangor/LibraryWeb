@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
@@ -32,7 +33,11 @@ import javax.persistence.Version;
 @Table(name = "department")
 @NamedQueries({
     @NamedQuery(name = "Department.findAll",
-            query = "SELECT d FROM Department d")})
+            query = "SELECT d FROM Department d"),
+    @NamedQuery(name = "Department.findWithDetail",
+            query = "SELECT DISTINCT d FROM Department d "
+            + "LEFT JOIN FETCH d.departments s "
+            + "WHERE d.id = :id")})
 public class Department implements Serializable {
 
     public static final String ID_PROPERTY = "id";
@@ -49,7 +54,7 @@ public class Department implements Serializable {
     private String name;
 
     @JsonProperty(DEPARTMENT_PROPERTY)
-    private Department department;
+    private Department rootDepartment;
 
     @JsonIgnore
     private Set<Employee> employees = new HashSet<Employee>();
@@ -96,16 +101,16 @@ public class Department implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "DEPARTMENT_ID")
-    public Department getDepartment() {
-        return department;
+    public Department getRootDepartment() {
+        return rootDepartment;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public void setRootDepartment(Department rootDepartment) {
+        this.rootDepartment = rootDepartment;
     }
 
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL,
-            orphanRemoval = true)
+    @OneToMany(mappedBy = "department", cascade = CascadeType.REMOVE,
+            fetch = FetchType.EAGER, orphanRemoval = true)
     public Set<Employee> getEmployees() {
         return employees;
     }
@@ -114,7 +119,7 @@ public class Department implements Serializable {
         this.employees = employees;
     }
 
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL,
+    @OneToMany(mappedBy = "rootDepartment", cascade = CascadeType.REMOVE,
             orphanRemoval = true)
     public Set<Department> getDepartments() {
         return departments;
@@ -133,7 +138,6 @@ public class Department implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Department)) {
             return false;
         }
@@ -145,7 +149,7 @@ public class Department implements Serializable {
     @Override
     public String toString() {
         return "Department - Id: " + id + ", Name: " + name
-                + ", Root: " + department + ", depList: " + departments;
+                + ", depList: " + departments;
     }
 
     public void addEmployee(Employee employee) {
@@ -158,7 +162,7 @@ public class Department implements Serializable {
     }
 
     public void addDepartment(Department department) {
-        department.setDepartment(this);
+        department.setRootDepartment(this);
         departments.add(department);
     }
 

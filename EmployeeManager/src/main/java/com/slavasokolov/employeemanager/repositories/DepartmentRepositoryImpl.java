@@ -28,17 +28,56 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     }
 
     public Department create(Department department) {
+        Department rootDepartment = department.getRootDepartment();
+        if (rootDepartment != null) {
+            rootDepartment = em.find(Department.class, rootDepartment.getId());
+            rootDepartment.addDepartment(department);
+            em.merge(rootDepartment);
+        }
         em.persist(department);
         return department;
     }
 
     public Department update(Department department) {
-        return em.merge(department);
+        Department newRoot = department.getRootDepartment();
+        Department oldRoot = find(department).getRootDepartment();
+        int version = em.find(Department.class, department.getId()).getVersion();
+        department.setVersion(version);
+        em.merge(department);
+        if (newRoot == null && oldRoot == null) {
+            return em.merge(department);
+        }
+        if (newRoot == null && oldRoot != null) {
+            oldRoot = find(oldRoot);
+            oldRoot.removeDepartment(department);
+            em.merge(oldRoot);
+        }
+        if (newRoot != null && oldRoot == null) {
+            newRoot = find(newRoot);
+            newRoot.addDepartment(department);
+            em.merge(newRoot);
+        }
+        if (newRoot != null && oldRoot != null) {
+            if (!newRoot.equals(oldRoot)) {
+                newRoot = find(newRoot);
+                newRoot.addDepartment(department);
+                oldRoot = find(oldRoot);
+                oldRoot.removeDepartment(department);
+                em.merge(oldRoot);
+                em.merge(newRoot);
+            }
+        }
+        return department;
+    }
+
+    public Department find(Department department) {
+        return em.createNamedQuery("Department.findWithDetail", Department.class)
+                .setParameter("id", department.getId()).getSingleResult();
     }
 
     public void delete(Department department) {
-        Department mergedDepartment = em.merge(department);
-        em.remove(mergedDepartment);
+        Department delDep = em.find(Department.class, department.getId());
+        em.remove(delDep);
     }
 
 }

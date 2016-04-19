@@ -19,6 +19,8 @@ public interface DepartmentRepository {
     Department create(Department department);
 
     Department update(Department department);
+    
+    Department find(Department department);
 
     void delete(Department department);
 

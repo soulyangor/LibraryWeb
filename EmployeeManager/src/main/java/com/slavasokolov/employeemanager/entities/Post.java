@@ -14,6 +14,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
@@ -89,8 +90,8 @@ public class Post implements Serializable {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL,
-            orphanRemoval = true)
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER,
+            cascade = CascadeType.REMOVE, orphanRemoval = true)
     public Set<Employee> getEmployees() {
         return employees;
     }
@@ -122,12 +123,12 @@ public class Post implements Serializable {
         return "Post - Id: " + id + ", Name: " + name;
     }
 
-    private void addEmployee(Employee employee) {
+    public void addEmployee(Employee employee) {
         employee.setPost(this);
         employees.add(employee);
     }
 
-    private void removeEmployee(Employee employee) {
+    public void removeEmployee(Employee employee) {
         employees.remove(employee);
     }
 

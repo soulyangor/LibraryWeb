@@ -33,12 +33,18 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     public Post update(Post post) {
+        int version = em.find(Post.class, post.getId()).getVersion();
+        post.setVersion(version);
         return em.merge(post);
     }
 
+    public Post find(Post post) {
+        return em.find(Post.class, post.getId());
+    }
+
     public void delete(Post post) {
-        Post mergedPost = em.merge(post);
-        em.remove(mergedPost);
+        Post delPost = em.find(Post.class, post.getId());
+        em.remove(delPost);
     }
 
 }

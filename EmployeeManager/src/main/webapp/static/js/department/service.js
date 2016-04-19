@@ -7,7 +7,7 @@ App.factory('DepartmentService', ['$http', '$q', function ($http, $q) {
 
         return {
             fetchAllDepartments: function () {
-                return $http.get('http://localhost:8085/EmployeeManager/departments')
+                return $http.get('/EmployeeManager/departments')
                         .then(
                                 function (response) {
                                     return response.data;
@@ -19,7 +19,7 @@ App.factory('DepartmentService', ['$http', '$q', function ($http, $q) {
                         );
             },
             createDepartment: function (department) {
-                return $http.post('http://localhost:8085/EmployeeManager/departments/item',
+                return $http.post('/EmployeeManager/departments/item',
                         JSON.stringify(department))
                         .then(
                                 function (response) {
@@ -31,9 +31,9 @@ App.factory('DepartmentService', ['$http', '$q', function ($http, $q) {
                                 }
                         );
             },
-            updateDepartment: function (currentDepartment, department) {
-                return $http.put('http://localhost:8085/EmployeeManager/departments/item',
-                        JSON.stringify([currentDepartment, department]))
+            updateDepartment: function (department) {
+                return $http.put('/EmployeeManager/departments/item',
+                        JSON.stringify(department))
                         .then(
                                 function (response) {
                                     return response.data;
