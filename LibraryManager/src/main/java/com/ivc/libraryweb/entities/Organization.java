@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity
 @Table(name = "organization")
@@ -27,6 +28,9 @@ public class Organization implements Serializable {
     //-------------------Fields---------------------------------------------------
     @JsonProperty(ID_PROPERTY)
     private Long id;
+
+    @JsonIgnore
+    private int version;
 
     @JsonProperty(NAME_PROPERTY)
     private String name;
@@ -55,6 +59,16 @@ public class Organization implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Version
+    @Column(name = "VERSION")
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     @Column(name = "NAME")

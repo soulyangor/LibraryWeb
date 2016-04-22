@@ -3,19 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ivc.libraryweb.repository;
+package com.ivc.libraryweb.repositories;
 
 import com.ivc.libraryweb.entities.Page;
 import java.util.List;
 
 /**
  *
- * @author Администратор
+ * @author Sokolov@ivc.org
  */
 public interface PageRepository {
-   Page save(Page page);
-   Page delete(Page page);
-   Page update(Page page);
-   List<Page> find(Page page);
-   List<Page> findAll();
+
+    List<Page> findAll();
+
+    Page find(Page page);
+
+    Page findWithDetail(Page page);
+
+    Page create(Page page);
+
+    Page update(Page page);
+
+    void delete(Page page);
+
 }

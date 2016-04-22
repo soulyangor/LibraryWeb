@@ -15,8 +15,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -25,6 +28,15 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "book")
+@NamedQueries({
+    @NamedQuery(name = "Book.findAll",
+            query = "SELECT b FROM Book b"),
+    @NamedQuery(name = "Book.findWithDetail",
+            query = "SELECT DISTINCT b FROM Book b "
+            + "LEFT JOIN FETCH b.documents d "
+            + "LEFT JOIN FETCH b.deliveries l "
+            + "WHERE b.id = :id")
+})
 public class Book implements Serializable {
     //-------------------Logger---------------------------------------------------
 
@@ -44,6 +56,9 @@ public class Book implements Serializable {
     //-------------------Fields---------------------------------------------------
     @JsonProperty(ID_PROPERTY)
     private Long id;
+
+    @JsonIgnore
+    private int version;
 
     @JsonProperty(NAME_PROPERTY)
     private String name;
@@ -105,6 +120,16 @@ public class Book implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Version
+    @Column(name = "VERSION")
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     @Column(name = "NAME")

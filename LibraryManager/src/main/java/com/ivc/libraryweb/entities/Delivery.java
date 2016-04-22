@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,6 +27,14 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name = "delivery")
+@NamedQueries({
+    @NamedQuery(name = "Delivery.findAll",
+            query = "SELECT d FROM Delivery d"),
+    @NamedQuery(name = "Delivery.findWithDetail",
+            query = "SELECT DISTINCT d FROM Delivery d "
+            + "LEFT JOIN FETCH d.book b "
+            + "WHERE d.id = :id")
+})
 public class Delivery implements Serializable {
     //-------------------Logger---------------------------------------------------
 
@@ -39,6 +49,9 @@ public class Delivery implements Serializable {
     @JsonProperty(ID_PROPERTY)
     private Long id;
 
+    @JsonIgnore
+    private int version;
+
     @JsonProperty(DELIVERY_DATE_PROPERTY)
     private Date deliveryDate;
 
@@ -50,9 +63,6 @@ public class Delivery implements Serializable {
 
     @JsonProperty(EMPLOYEE_ID_PROPERTY)
     private Long employeId;
-
-    @JsonIgnore
-    private int version;
 
     //-------------------Constructors---------------------------------------------
     public Delivery() {

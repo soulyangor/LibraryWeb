@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  *
@@ -25,7 +26,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "page")
 @NamedQueries({
-    @NamedQuery(name = "Page.findAll", query = "SELECT c FROM Page c")})
+    @NamedQuery(name = "Page.findAll",
+            query = "SELECT p FROM Page p"),
+    @NamedQuery(name = "Page.findWithDetail",
+            query = "SELECT DISTINCT p FROM Page p "
+            + "LEFT JOIN FETCH p.document d "
+            + "WHERE p.id = :id")
+})
 public class Page implements Serializable {
     //-------------------Logger---------------------------------------------------
 
@@ -37,6 +44,9 @@ public class Page implements Serializable {
     //-------------------Fields---------------------------------------------------
     @JsonProperty(ID_PROPERTY)
     private Long id;
+
+    @JsonIgnore
+    private int version;
 
     @JsonProperty(NAME_PROPERTY)
     private String name;
@@ -65,6 +75,16 @@ public class Page implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Version
+    @Column(name = "VERSION")
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     @Column(name = "NAME")

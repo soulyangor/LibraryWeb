@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
 /**
  *
@@ -45,6 +46,9 @@ public class Document implements Serializable {
 
     @JsonProperty(MODIFICATION_PROPERTY)
     private int modification;
+
+    @JsonIgnore
+    private int version;
 
     @JsonProperty(INCOME_NUMBER_PROPERTY)
     private String incomeNumber;
@@ -87,6 +91,16 @@ public class Document implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Version
+    @Column(name = "VERSION")
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     @Column(name = "INCOME_NUMBER")
