@@ -6,10 +6,12 @@ package com.ivc.libraryweb.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -44,7 +46,7 @@ public class BookType implements Serializable {
     //-------------------Fields---------------------------------------------------
     @JsonProperty(ID_PROPERTY)
     private Long id;
-    
+
     @JsonIgnore
     private int version;
 
@@ -52,7 +54,7 @@ public class BookType implements Serializable {
     private String name;
 
     @JsonIgnore
-    private Set<Book> books;
+    private Set<Book> books = new HashSet<Book>();
 
     //-------------------Constructors---------------------------------------------
     public BookType() {
@@ -73,7 +75,7 @@ public class BookType implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     @Version
     @Column(name = "VERSION")
     public int getVersion() {
@@ -93,8 +95,8 @@ public class BookType implements Serializable {
         this.name = name;
     }
 
-    @Column(name = "BOOKS")
-    @OneToMany(mappedBy = "bookType", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "bookType", fetch = FetchType.EAGER,
+            cascade = CascadeType.REMOVE, orphanRemoval = true)
     public Set<Book> getBooks() {
         return books;
     }

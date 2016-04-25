@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -66,7 +67,7 @@ public class Document implements Serializable {
     private Book book;
 
     @JsonIgnore
-    private Set<Page> pages;
+    private Set<Page> pages = new HashSet<Page>();
     //-------------------Constructors---------------------------------------------
 
     public Document(int modification, String incomeNumber, String outcomeNumber,
@@ -150,7 +151,6 @@ public class Document implements Serializable {
         this.modification = modification;
     }
 
-    @Column(name = "PAGES")
     @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<Page> getPages() {
         return pages;

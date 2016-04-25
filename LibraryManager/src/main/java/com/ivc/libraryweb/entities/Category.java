@@ -6,6 +6,7 @@ package com.ivc.libraryweb.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -41,7 +42,7 @@ public class Category implements Serializable {
     private String name;
 
     @JsonIgnore
-    private Set<Book> books;
+    private Set<Book> books = new HashSet<Book>();
 
     //-------------------Constructors---------------------------------------------
     public Category() {
@@ -82,7 +83,6 @@ public class Category implements Serializable {
         this.name = name;
     }
 
-    @Column(name = "PAGES")
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<Book> getBooks() {
         return books;

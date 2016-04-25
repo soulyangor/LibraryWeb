@@ -6,6 +6,7 @@ package com.ivc.libraryweb.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,7 +40,7 @@ public class Organization implements Serializable {
     private String address;
 
     @JsonIgnore
-    private Set<Book> books;
+    private Set<Book> books = new HashSet<Book>();
 
     //-------------------Constructors---------------------------------------------
     public Organization() {
@@ -89,7 +90,6 @@ public class Organization implements Serializable {
         this.address = address;
     }
 
-    @Column(name = "BOOKS")
     @OneToMany(mappedBy = "organization", orphanRemoval = true, cascade = CascadeType.ALL)
     public Set<Book> getBooks() {
         return books;
