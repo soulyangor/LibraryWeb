@@ -27,15 +27,15 @@ public class JPAConfig {
     private static final String DRIVER = "org.postgresql.Driver";
     private static final String URL = "jdbc:postgresql://localhost:5432/LibraryDb";
     private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "123456";
+    private static final String PASSWORD = "1234";
     private static final String DIALECT = "org.hibernate.dialect.PostgreSQLDialect";
     private static final String STRATEGY = "create";
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory( DataSource ds) {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource());
-        em.setPackagesToScan(new String[]{"com.ivc.libraryweb.model"});
+        em.setDataSource(ds);
+        em.setPackagesToScan(new String[]{"com.ivc.libraryweb.entities"});
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(additionalProperties());

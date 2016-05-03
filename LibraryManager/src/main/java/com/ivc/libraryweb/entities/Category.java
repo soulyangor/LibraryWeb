@@ -1,29 +1,38 @@
-/*
- Информационно-вычислительный центр космодрома Байконур
- */
+
 package com.ivc.libraryweb.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+
 /**
  *
- * @author Администратор
+ * @author Vitaliy Denisov
  */
 @Entity
 @Table(name = "category")
+@NamedQueries({
+    @NamedQuery(name ="Category.findAll",
+            query = "SELECT b FROM Category b"),
+    @NamedQuery(name = "Category.findWithDetail",
+            query = "SELECT DISTINCT t FROM Category t "
+            + "LEFT JOIN FETCH t.books b "
+            + "WHERE t.id = :id")
+})
 public class Category implements Serializable {
     //-------------------Logger---------------------------------------------------
 
@@ -42,7 +51,7 @@ public class Category implements Serializable {
     private String name;
 
     @JsonIgnore
-    private Set<Book> books = new HashSet<Book>();
+    private Set<Book> books;
 
     //-------------------Constructors---------------------------------------------
     public Category() {
@@ -83,7 +92,8 @@ public class Category implements Serializable {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column(name = "PAGES")
+    @OneToMany(mappedBy = "category",fetch = FetchType.EAGER,cascade = CascadeType.MERGE ,orphanRemoval = true)
     public Set<Book> getBooks() {
         return books;
     }

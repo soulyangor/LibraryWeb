@@ -13,10 +13,11 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 @Configuration
-@ComponentScan(basePackages={"com.ivc.libraryweb.config"})
-@Profile("test")
+@ComponentScan(basePackages={"com.ivc.libraryweb.config","com.ivc.libraryweb.entities"})
+
 public class ServiceTestConfig {
     @Bean
+    @Profile("test")
     public DataSource dataSource() {
         DataSource ds =null; 
         try{

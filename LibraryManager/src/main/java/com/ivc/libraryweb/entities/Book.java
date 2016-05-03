@@ -1,5 +1,5 @@
 /*
- Информационно-вычислительный центр космодрома Байконур
+ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
  */
 package com.ivc.libraryweb.entities;
 
@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,7 +26,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author Администратор
+ * @author пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
  */
 @Entity
 @Table(name = "book")
@@ -226,7 +227,7 @@ public class Book implements Serializable {
         this.bookType = bookType;
     }
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     public Set<Document> getDocuments() {
         return documents;
     }
@@ -235,7 +236,7 @@ public class Book implements Serializable {
         this.documents = documents;
     }
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     public Set<Delivery> getDeliveries() {
         return deliveries;
     }
@@ -255,20 +256,19 @@ public class Book implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 23 * hash + (int) (this.id ^ (this.id >>> 32));
-        hash = 23 * hash + (this.name != null ? this.name.hashCode() : 0);
-        hash = 23 * hash + (this.inventoryNumber != null ? this.inventoryNumber.hashCode() : 0);
-        hash = 23 * hash + (this.declimalNumber != null ? this.declimalNumber.hashCode() : 0);
-        hash = 23 * hash + (this.bookNumber != null ? this.bookNumber.hashCode() : 0);
-        hash = 23 * hash + (this.bookPart != null ? this.bookPart.hashCode() : 0);
-        hash = 23 * hash + (this.copyNumber != null ? this.copyNumber.hashCode() : 0);
-        hash = 23 * hash + (this.category != null ? this.category.hashCode() : 0);
+        int hash = 3;
+        hash = 17 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 17 * hash + this.version;
+        hash = 17 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 17 * hash + this.listCount;
         return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
         if (obj == null) {
             return false;
         }
@@ -276,34 +276,20 @@ public class Book implements Serializable {
             return false;
         }
         final Book other = (Book) obj;
-        if (this.id != other.id) {
-            return false;
-        }
-        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
-            return false;
-        }
-        if ((this.inventoryNumber == null) ? (other.inventoryNumber != null) : !this.inventoryNumber.equals(other.inventoryNumber)) {
-            return false;
-        }
-        if ((this.declimalNumber == null) ? (other.declimalNumber != null) : !this.declimalNumber.equals(other.declimalNumber)) {
-            return false;
-        }
-        if ((this.bookNumber == null) ? (other.bookNumber != null) : !this.bookNumber.equals(other.bookNumber)) {
-            return false;
-        }
-        if ((this.bookPart == null) ? (other.bookPart != null) : !this.bookPart.equals(other.bookPart)) {
-            return false;
-        }
-        if ((this.copyNumber == null) ? (other.copyNumber != null) : !this.copyNumber.equals(other.copyNumber)) {
+        if (this.version != other.version) {
             return false;
         }
         if (this.listCount != other.listCount) {
             return false;
         }
-        if (this.category != other.category && (this.category == null || !this.category.equals(other.category))) {
+        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+            return false;
+        }
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
             return false;
         }
         return true;
     }
 
+   
 }
