@@ -1,23 +1,34 @@
 /*
- �?нформационно-вычислительный центр космодрома Байконур
+ Информационно-вычислительный центр космодрома Байконур
  */
 package com.ivc.libraryweb.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 @Entity
 @Table(name = "organization")
+@NamedQueries({
+    @NamedQuery(name = "Organization.findAll",
+            query = "SELECT b FROM Organization b"),
+    @NamedQuery(name = "Organization.findWithDetail",
+            query = "SELECT DISTINCT b FROM Organization b "
+            + "LEFT JOIN FETCH b.books d "
+            + "WHERE b.id = :id")
+})
 public class Organization implements Serializable {
     //-------------------Logger---------------------------------------------------
 
@@ -40,7 +51,7 @@ public class Organization implements Serializable {
     private String address;
 
     @JsonIgnore
-    private Set<Book> books = new HashSet<Book>();
+    private Set<Book> books;
 
     //-------------------Constructors---------------------------------------------
     public Organization() {
@@ -51,8 +62,15 @@ public class Organization implements Serializable {
         this.address = address;
     }
 
+    public Organization(int version, String name, String address, Set<Book> books) {
+        this.version = version;
+        this.name = name;
+        this.address = address;
+        this.books = books;
+    }
     //-------------------Getters and setters--------------------------------------
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     public Long getId() {
         return id;
@@ -90,6 +108,7 @@ public class Organization implements Serializable {
         this.address = address;
     }
 
+    @Column(name = "BOOKS")
     @OneToMany(mappedBy = "organization", orphanRemoval = true, cascade = CascadeType.ALL)
     public Set<Book> getBooks() {
         return books;

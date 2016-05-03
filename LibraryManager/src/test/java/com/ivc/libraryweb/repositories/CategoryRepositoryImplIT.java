@@ -81,7 +81,7 @@ public class CategoryRepositoryImplIT extends AbstractTransactionalJUnit4SpringC
     
    @DataSets(setUpDataSet= "data-category.sql")
     @Test
-    public void testCreateDelete(){
+    public void testDelete(){
        categoryRepository.delete(deleteCategory);
         List<Category> l = em.createNamedQuery("Category.findAll",Category.class).getResultList();
         assertTrue((l.size()==1)&&l.get(0).equals(validCategory));
@@ -119,13 +119,16 @@ public class CategoryRepositoryImplIT extends AbstractTransactionalJUnit4SpringC
     @Test
     public void testUpdate(){
         validCategory.setName("newName");
+        newBook.setCategory(validCategory);
+        em.persist(newBook);
         Set<Book> s = new HashSet<Book>();
         s.add(newBook);
         validCategory.getBooks().clear();
         validCategory.setBooks(s);
         categoryRepository.update(validCategory);
-        Category c = em.find(Category.class, validCategory.getId());
+        Category c = em.createNamedQuery("Category.findWithDetail",Category.class).setParameter("id", validCategory.getId()).getSingleResult();
         assertEquals(validCategory,c);
+        assertTrue(c.getBooks().size()==1&&c.getBooks().contains(newBook));
     }
     
 }
