@@ -29,7 +29,7 @@ public class JPAConfig {
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "1234";
     private static final String DIALECT = "org.hibernate.dialect.PostgreSQLDialect";
-    private static final String STRATEGY = "create";
+    private static final String STRATEGY = "none";
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory( DataSource ds) {

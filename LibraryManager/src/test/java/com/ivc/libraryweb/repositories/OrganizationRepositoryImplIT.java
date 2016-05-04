@@ -5,7 +5,6 @@
  */
 package com.ivc.libraryweb.repositories;
 
-import com.ivc.libraryweb.entities.Category;
 import com.ivc.libraryweb.entities.Organization;
 import com.ivc.libraryweb.integration.config.DataSets;
 import com.ivc.libraryweb.integration.config.ServiceTestConfig;
@@ -49,8 +48,8 @@ public class OrganizationRepositoryImplIT extends AbstractTransactionalJUnit4Spr
     @PersistenceContext
     private EntityManager em;
 
-    private Organization validOrganization;
-    private Organization deleteOrganization;
+    private Organization validOrganization = new Organization("org1","adr1");
+    private Organization deleteOrganization = new Organization("org2","adr2");
     private Organization newOrganization = new Organization("newOrg", "adr");
 
     /**
@@ -58,9 +57,8 @@ public class OrganizationRepositoryImplIT extends AbstractTransactionalJUnit4Spr
      */
     @Before
     public void before() {
-        List<Organization> l = em.createNamedQuery("Organization.findAll", Organization.class).getResultList();
-        validOrganization = l.get(0);
-        deleteOrganization = l.get(1);
+        validOrganization.setId(new Long(1));
+        deleteOrganization.setId(new Long(2));
     }
 
     @Test
@@ -87,11 +85,10 @@ public class OrganizationRepositoryImplIT extends AbstractTransactionalJUnit4Spr
     /**
      * Test of update method, of class OrganizationRepositoryImpl.
      */
-    @Ignore
     @Test
     @DataSets(setUpDataSet = "data-organization.sql")
     public void testUpdate() {
-
+        
     }
 
     /**
