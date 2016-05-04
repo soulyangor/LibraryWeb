@@ -7,8 +7,8 @@ package com.ivc.libraryweb.repositories;
 
 import com.ivc.libraryweb.entities.Organization;
 import com.ivc.libraryweb.integration.config.DataSets;
-import com.ivc.libraryweb.integration.config.ServiceTestConfig;
-import com.ivc.libraryweb.integration.config.ServiceTestExecutionListener;
+import com.ivc.libraryweb.integration.config.TestConfig;
+import com.ivc.libraryweb.integration.config.RepositoryTestExecutionListener;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -35,8 +35,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @Configuration
 @ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {ServiceTestConfig.class})
-@TestExecutionListeners({ServiceTestExecutionListener.class})
+@ContextConfiguration(classes = {TestConfig.class})
+@TestExecutionListeners({RepositoryTestExecutionListener.class})
 @WebAppConfiguration
 public class OrganizationRepositoryImplIT extends AbstractTransactionalJUnit4SpringContextTests {
 

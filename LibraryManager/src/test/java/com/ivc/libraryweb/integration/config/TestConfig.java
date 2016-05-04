@@ -1,5 +1,6 @@
 package com.ivc.libraryweb.integration.config;
 
+import com.ivc.libraryweb.config.JPAConfig;
 import java.util.Properties;
 import javax.sql.DataSource;
 
@@ -15,9 +16,8 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 @Configuration
-@ComponentScan(basePackages={"com.ivc.libraryweb.config","com.ivc.libraryweb.entities"})
-
-public class ServiceTestConfig {
+@ComponentScan(basePackages={"com.ivc.libraryweb.entities"},basePackageClasses = {JPAConfig.class} )
+public class TestConfig {
     
     
     @Bean

@@ -8,8 +8,8 @@ package com.ivc.libraryweb.repositories;
 import com.ivc.libraryweb.entities.Book;
 import com.ivc.libraryweb.entities.Category;
 import com.ivc.libraryweb.integration.config.DataSets;
-import com.ivc.libraryweb.integration.config.ServiceTestConfig;
-import com.ivc.libraryweb.integration.config.ServiceTestExecutionListener;
+import com.ivc.libraryweb.integration.config.TestConfig;
+import com.ivc.libraryweb.integration.config.RepositoryTestExecutionListener;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,8 +39,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @Configuration
 @ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {ServiceTestConfig.class})
-@TestExecutionListeners({ServiceTestExecutionListener.class})
+@ContextConfiguration(classes = {TestConfig.class})
+@TestExecutionListeners({RepositoryTestExecutionListener.class})
 @WebAppConfiguration
 public class CategoryRepositoryImplIT extends AbstractTransactionalJUnit4SpringContextTests {
     

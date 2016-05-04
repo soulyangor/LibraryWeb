@@ -11,7 +11,7 @@ import org.dbunit.IDatabaseTester;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestExecutionListener;
 
-public class ServiceTestExecutionListener implements TestExecutionListener {
+public class RepositoryTestExecutionListener implements TestExecutionListener {
 
     private IDatabaseTester databaseTester;
     private static final String CLEAN_FILE = "clean_db.sql";
