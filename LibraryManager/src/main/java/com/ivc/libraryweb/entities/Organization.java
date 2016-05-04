@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -109,7 +110,7 @@ public class Organization implements Serializable {
     }
 
     @Column(name = "BOOKS")
-    @OneToMany(mappedBy = "organization", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "organization", orphanRemoval = true, fetch = FetchType.LAZY)
     public Set<Book> getBooks() {
         return books;
     }

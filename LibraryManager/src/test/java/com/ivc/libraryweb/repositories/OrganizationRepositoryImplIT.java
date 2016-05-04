@@ -5,11 +5,15 @@
  */
 package com.ivc.libraryweb.repositories;
 
+import com.ivc.libraryweb.entities.Book;
+import com.ivc.libraryweb.entities.Category;
 import com.ivc.libraryweb.entities.Organization;
 import com.ivc.libraryweb.integration.config.DataSets;
 import com.ivc.libraryweb.integration.config.TestConfig;
 import com.ivc.libraryweb.integration.config.RepositoryTestExecutionListener;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import static org.assertj.core.api.AssertionsForClassTypes.extractProperty;
@@ -26,6 +30,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
@@ -35,22 +40,25 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @Configuration
 @ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestConfig.class})
+@ContextConfiguration( loader = AnnotationConfigContextLoader.class, classes = {TestConfig.class, OrganizationRepositoryImpl.class})
 @TestExecutionListeners({RepositoryTestExecutionListener.class})
-@WebAppConfiguration
 public class OrganizationRepositoryImplIT extends AbstractTransactionalJUnit4SpringContextTests {
 
     private static final String[] ORGANIZATION_NAME = new String[]{"org1", "org2", "newOrg"};
-
+    private static final String[] ALL_ORGANIZATION_NAME = new String[]{"org1", "org2"};
+    private static final String[] BOOK_LIST = new String[]{"myBook1","myBook2"};
+    
+    
     @Autowired
     OrganizationRepository organizationRepository;
 
     @PersistenceContext
     private EntityManager em;
 
-    private Organization validOrganization = new Organization("org1","adr1");
-    private Organization deleteOrganization = new Organization("org2","adr2");
+    private Organization validOrganization = new Organization("org1", "adr1");
+    private Organization deleteOrganization = new Organization("org2", "adr2");
     private Organization newOrganization = new Organization("newOrg", "adr");
+    private Book newBook = new Book("newBook", "1", "1", "1", "", "1s");
 
     /**
      * Test of create method, of class OrganizationRepositoryImpl.
@@ -88,18 +96,22 @@ public class OrganizationRepositoryImplIT extends AbstractTransactionalJUnit4Spr
     @Test
     @DataSets(setUpDataSet = "data-organization.sql")
     public void testUpdate() {
-        
-    }
+        validOrganization.setName("newName");
+        organizationRepository.update(validOrganization);
+        Organization c =  em.find(Organization.class, validOrganization.getId());
+        assertEquals(validOrganization, c);
+  }
 
     /**
      * Test of findAll method, of class OrganizationRepositoryImpl.
      */
-    @Ignore
     @Test
     @DataSets(setUpDataSet = "data-organization.sql")
     public void testFindAll() {
-
-        fail("The test case is a prototype.");
+        List<Organization> findList = organizationRepository.findAll();
+        assertThat(extractProperty(Category.NAME_PROPERTY).from(findList))
+                .hasSize(ALL_ORGANIZATION_NAME.length)
+                .containsOnly((Object[]) ALL_ORGANIZATION_NAME);
     }
 
     /**
@@ -115,12 +127,14 @@ public class OrganizationRepositoryImplIT extends AbstractTransactionalJUnit4Spr
     /**
      * Test of findWithDetail method, of class OrganizationRepositoryImpl.
      */
-    @Ignore
     @Test
     @DataSets(setUpDataSet = "data-organization.sql")
     public void testFindWithDetail() {
-
-        fail("The test case is a prototype.");
+        Organization organization = organizationRepository.findWithDetail(validOrganization);
+        assertEquals(validOrganization,organization);
+        assertThat(extractProperty(Book.NAME_PROPERTY).from(organization.getBooks()))
+                .hasSize(BOOK_LIST.length)
+                .containsOnly((Object[]) BOOK_LIST);
     }
 
 }

@@ -29,7 +29,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 
 /**
@@ -39,9 +39,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @Configuration
 @ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestConfig.class})
+@ContextConfiguration( loader = AnnotationConfigContextLoader.class, classes = {TestConfig.class, CategoryRepositoryImpl.class})
 @TestExecutionListeners({RepositoryTestExecutionListener.class})
-@WebAppConfiguration
 public class CategoryRepositoryImplIT extends AbstractTransactionalJUnit4SpringContextTests {
     
     private static final String[] CATEGORY_NAME = new String[]{"8A82KM","14A14","11A11"};
