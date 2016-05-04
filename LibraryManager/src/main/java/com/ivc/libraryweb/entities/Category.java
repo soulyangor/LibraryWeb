@@ -93,7 +93,7 @@ public class Category implements Serializable {
     }
 
     @Column(name = "PAGES")
-    @OneToMany(mappedBy = "category",cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category",cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
     public Set<Book> getBooks() {
         return books;
     }

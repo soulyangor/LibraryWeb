@@ -39,13 +39,13 @@ public class ServiceTestExecutionListener implements TestExecutionListener {
         if (!dataSetName.equals("")) {
             ClassLoader classLoader = getClass().getClassLoader();
             Connection connection = ((DataSource) testCtx.getApplicationContext().getBean(DataSource.class)).getConnection();
-            List<String> sqlLines = Files.readAllLines(Paths.get(classLoader.getResource(CLEAN_FILE).getFile()), StandardCharsets.UTF_8);
-            sqlLines.addAll(Files.readAllLines(Paths.get(classLoader.getResource(dataSetName).getFile()), StandardCharsets.UTF_8));
-            String quary = "";
+            List<String> sqlLines = Files.readAllLines(Paths.get(classLoader.getResource(CLEAN_FILE).toURI()), StandardCharsets.UTF_8);
+            sqlLines.addAll(Files.readAllLines(Paths.get(classLoader.getResource(dataSetName).toURI()), StandardCharsets.UTF_8));
+            String query = "";
             for (String s : sqlLines) {
-                quary += s;
+                query += s;
             }
-            PreparedStatement statement = connection.prepareStatement(quary);
+            PreparedStatement statement = connection.prepareStatement(query);
             statement.execute();
             connection.close();
 //            File file = new  File(classLoader.getResource(dataSetName).getFile());
