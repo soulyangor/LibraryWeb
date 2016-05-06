@@ -11,9 +11,7 @@ import com.ivc.libraryweb.entities.Organization;
 import com.ivc.libraryweb.integration.config.DataSets;
 import com.ivc.libraryweb.integration.config.TestConfig;
 import com.ivc.libraryweb.integration.config.RepositoryTestExecutionListener;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import static org.assertj.core.api.AssertionsForClassTypes.extractProperty;
@@ -21,7 +19,6 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +28,7 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.unitils.dbunit.annotation.DataSet;
 
 /**
  *
@@ -70,7 +67,7 @@ public class OrganizationRepositoryImplIT extends AbstractTransactionalJUnit4Spr
     }
 
     @Test
-    @DataSets(setUpDataSet = "data-organization.sql")
+    @DataSets(setUpDataSet = "organization_data.xml")
     public void testCreate() {
         organizationRepository.create(newOrganization);
         List<Organization> l = em.createNamedQuery("Organization.findAll", Organization.class).getResultList();
@@ -83,7 +80,7 @@ public class OrganizationRepositoryImplIT extends AbstractTransactionalJUnit4Spr
      * Test of delete method, of class OrganizationRepositoryImpl.
      */
     @Test
-    @DataSets(setUpDataSet = "data-organization.sql")
+    @DataSets(setUpDataSet = "organization_data.xml")
     public void testDelete() {
         organizationRepository.delete(deleteOrganization);
         List<Organization> l = em.createNamedQuery("Organization.findAll", Organization.class).getResultList();
@@ -94,7 +91,7 @@ public class OrganizationRepositoryImplIT extends AbstractTransactionalJUnit4Spr
      * Test of update method, of class OrganizationRepositoryImpl.
      */
     @Test
-    @DataSets(setUpDataSet = "data-organization.sql")
+    @DataSets(setUpDataSet = "organization_data.xml")
     public void testUpdate() {
         validOrganization.setName("newName");
         organizationRepository.update(validOrganization);
@@ -106,7 +103,7 @@ public class OrganizationRepositoryImplIT extends AbstractTransactionalJUnit4Spr
      * Test of findAll method, of class OrganizationRepositoryImpl.
      */
     @Test
-    @DataSets(setUpDataSet = "data-organization.sql")
+    @DataSets(setUpDataSet = "organization_data.xml")
     public void testFindAll() {
         List<Organization> findList = organizationRepository.findAll();
         assertThat(extractProperty(Category.NAME_PROPERTY).from(findList))
@@ -118,23 +115,12 @@ public class OrganizationRepositoryImplIT extends AbstractTransactionalJUnit4Spr
      * Test of find method, of class OrganizationRepositoryImpl.
      */
     @Test
-    @DataSets(setUpDataSet = "data-organization.sql")
+    @DataSets(setUpDataSet = "organization_data.xml")
     public void testFind() {
         Organization organization = organizationRepository.find(validOrganization);
         assertEquals(validOrganization, organization);
     }
 
-    /**
-     * Test of findWithDetail method, of class OrganizationRepositoryImpl.
-     */
-    @Test
-    @DataSets(setUpDataSet = "data-organization.sql")
-    public void testFindWithDetail() {
-        Organization organization = organizationRepository.findWithDetail(validOrganization);
-        assertEquals(validOrganization,organization);
-        assertThat(extractProperty(Book.NAME_PROPERTY).from(organization.getBooks()))
-                .hasSize(BOOK_LIST.length)
-                .containsOnly((Object[]) BOOK_LIST);
-    }
+
 
 }

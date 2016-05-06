@@ -16,6 +16,7 @@
         <google.guava.version>14.0.1</google.guava.version>
         <jsr349.version>1.1.0.Final</jsr349.version>
         <slf4j.version>1.7.6</slf4j.version>
+        <unitils.version>3.4.2</unitils.version>
         <hibernate.validator.version>5.1.0.Final</hibernate.validator.version>
     </properties>
     <dependencies>
@@ -112,6 +113,30 @@
             <scope>test</scope>
         </dependency>
         <!-- Test -->
+         <dependency>
+            <groupId>org.unitils</groupId>
+            <artifactId>unitils-dbunit</artifactId>
+            <version>${unitils.version}</version>
+            <scope>test</scope>
+        </dependency>
+                <dependency>
+            <groupId>org.unitils</groupId>
+            <artifactId>unitils-database</artifactId>
+            <version>${unitils.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.unitils</groupId>
+            <artifactId>unitils-spring</artifactId>
+            <version>${unitils.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.unitils</groupId>
+            <artifactId>unitils-orm</artifactId>
+            <version>${unitils.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
@@ -138,7 +163,9 @@
         <dependency>
             <groupId>org.dbunit</groupId>
             <artifactId>dbunit</artifactId>
-            <version>${dbunit.version}</version>
+            <version>2.5.1</version>
+            <scope>test</scope>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>

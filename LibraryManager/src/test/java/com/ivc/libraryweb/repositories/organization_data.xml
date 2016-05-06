@@ -1,0 +1,23 @@
+<dataset>
+    <table name="TEST_TABLE">
+        <column>id</column>
+        <column>name</column>
+        <column>address</column>
+        <column>version</column>
+        <column>organization_pkey</column>
+        <row>
+            <value>1</value>
+            <value>org1</value>
+            <value>adr1</value>
+            <value>version</value>
+            <null/>
+        </row>
+        <row>
+            <value>2</value>
+            <value>org2</value>
+            <value>adr2</value>
+            <value>version</value>
+            <null/>
+        </row>
+    </table>
+</dataset>
