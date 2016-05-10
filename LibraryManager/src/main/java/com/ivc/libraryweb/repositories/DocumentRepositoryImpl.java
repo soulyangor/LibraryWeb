@@ -1,5 +1,6 @@
 package com.ivc.libraryweb.repositories;
 
+import com.ivc.libraryweb.entities.Category;
 import com.ivc.libraryweb.entities.Document;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -26,15 +27,15 @@ public class DocumentRepositoryImpl implements DocumentRepository {
   //-------------------Getters and setters--------------------------------------
     //-------------------Methods--------------------------------------------------
     public List<Document> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return em.createNamedQuery("Document.findAll",Document.class).getResultList();
     }
 
     public Document find(Document document) {
         return em.find(Document.class,document.getId());
     }
 
-    public Document findWithDetail(Document book) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Document findWithDetail(Document document) {
+         return em.createNamedQuery("Document.findWithDetail",Document.class).setParameter("id", document.getId()).getSingleResult();
     }
 
     public Document create(Document document) {
@@ -42,11 +43,13 @@ public class DocumentRepositoryImpl implements DocumentRepository {
        return document;
     }
 
-    public Document update(Document book) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Document update(Document document) {
+        int version = find(document).getVersion();
+        document.setVersion(version);
+        return em.merge(document);
     }
 
-    public void delete(Document book) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void delete(Document document) {
+      em.remove(find(document));
     }
 }

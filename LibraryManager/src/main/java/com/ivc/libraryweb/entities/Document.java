@@ -17,6 +17,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -29,6 +31,14 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name = "document")
+@NamedQueries({
+    @NamedQuery(name ="Document.findAll",
+            query = "SELECT b FROM Document b"),
+    @NamedQuery(name = "Document.findWithDetail",
+            query = "SELECT DISTINCT d FROM Document d LEFT JOIN FETCH d.pages p "
+            + "LEFT JOIN FETCH d.book b"
+            + "WHERE d.id = :id")
+})
 public class Document implements Serializable {
     //-------------------Logger---------------------------------------------------
 
